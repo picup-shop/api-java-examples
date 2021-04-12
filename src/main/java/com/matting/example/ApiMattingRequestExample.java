@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.matting.api.ApiMattingRequest;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -13,7 +14,7 @@ import java.util.*;
 public class ApiMattingRequestExample {
 
     //请登录picup.shop查看你的API密钥
-    public static final String API_KEY = "";
+    public static final String API_KEY = "b3657935cf564118b66db1feb8a122f0";
     //请求地址
     public static final String REQUEST_URL = "http://www.picup.shop/api/v1";
     //json
@@ -22,18 +23,28 @@ public class ApiMattingRequestExample {
     public static ApiMattingRequest apiMattingRequest;
     //输入的图片路径
     public static String INPUT_IMAGE_PATH;
-    //输出指定路径 例如:new FileOutputStream(OUT_PUT_PATH + imageName + ".png");
+    //输出指定路径
     public static String OUT_PUT_PATH;
     //图片URL
     public static String IMAGE_URL;
 
+    //示例请求的图片
+    public static List<String> images;
     //初始化
     static {
         gson = new GsonBuilder().create();
         apiMattingRequest = new ApiMattingRequest(API_KEY);
-        INPUT_IMAGE_PATH = "/xxx/xxx/xx.jpeg";
-        OUT_PUT_PATH = "/xxx/xxx/";
-        IMAGE_URL = "";
+        //示例请求图片
+        images = new ArrayList<>();
+        //测试除风格迁移接口之外的所有接口图片
+        images.add("images/test.jpeg");
+        //风格迁移示例图片
+        images.add("images/cat.jpeg");
+        images.add("images/style.jpeg");
+        //图片地址
+        IMAGE_URL = "https://c-ssl.duitang.com/uploads/item/201908/08/20190808151534_tdivh.thumb.1000_0.jpg";
+        //此路径是为了方便展示API调用结果的图片，实际API调用返回的图片结果可以根据项目需求改动
+        OUT_PUT_PATH = System.getProperty("user.dir") + "/src/main/resources/results";
     }
 
     /**
@@ -41,19 +52,17 @@ public class ApiMattingRequestExample {
      */
     public void portraitReturnsBinary() {
         String url = REQUEST_URL + "/matting";
-        File file = new File(INPUT_IMAGE_PATH);
         //是否裁剪至最小非透明区域 （非必填）
         Boolean crop = null;
         //填充背景色 （非必填）
         String bgColor = "";
         try {
-            //使用inputStream方式上传图片，注:使用此方式必须传filName参数
-            //InputStream inputStream = new FileInputStream(file);
-            //String fileName = file.getName();
-            //apiMattingRequest.requestMattingReturnsBinary(url, inputStream, crop, bgColor, "fileName");
-            byte[] bytes = apiMattingRequest.requestMattingReturnsBinary(url, file, crop, bgColor);
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
+            File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
+            String fileName = file.getName();
+            byte[] bytes = apiMattingRequest.requestMattingReturnsBinary(url, inputStream, crop, bgColor, fileName);
             if (bytes != null) {
-                FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "");
+                FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "/portrait_binary.png");
                 outputStream.write(bytes);
                 outputStream.close();
             }
@@ -607,7 +616,7 @@ public class ApiMattingRequestExample {
 
     public static void main(String[] args) throws IOException {
         ApiMattingRequestExample example = new ApiMattingRequestExample();
-        //example.portraitReturnsBinary();
+        example.portraitReturnsBinary();
         //example.portraitReturnsBase64();
         //example.portraitByImageUrl();
         //example.idPhoto();
@@ -626,6 +635,6 @@ public class ApiMattingRequestExample {
         //example.animeReturnsBinary();
         //example.animeReturnsBase64();
         //example.animeByImageUrl();
-        //example.styleTransfer();
+        //example.styleTransfer();;
     }
 }
