@@ -4,8 +4,9 @@
 如果想要直接看到调用API的结果图片，在ApiMattingExample.java下更改APIKEY，图片的输入路径和输出路径即可
 ```java
    public class ApiMattingExample {
+   public static String APIKEY = "账号获取到的APIKEY"; 
+    
    static {
-      API_KEY = "账号获取的APIKEY";
       INPUT_IMAGE_PATH = "图片所在的路径";
       //OUT_PUT_PATH可以为有后缀名全路径，也可以为固定路径 + 加上图片名称和后缀方便测试每一个方法
       OUT_PUT_PATH = "设置你需要输出图片到指定的路径";
