@@ -2,7 +2,7 @@
 
 ##### 使用示例
 如果想要直接看到调用API的结果图片，在ApiMattingExample.java下更改APIKEY，图片的输入路径和输出路径即可
-(```) 
+```java
    public class ApiMattingExample {
    static {
       API_KEY = "账号获取的APIKEY";
@@ -14,15 +14,15 @@
    public static void main (String args[]) {
         //调用你所需要的接口方法,执行成功后到设置的输出路径查看图片修改的结果
         new ApiMattingExample().universalReturnsBinary();
-   }
-}
-(```) 
+     }
+  }
+```
 
 
 ##### 注：更多API接口的详细信息请参考官网的API文档(示例项目的代码会根据官网的API文档同步更新)
 [皮卡智能抠图](http://www.picup.shop/apidoc-image-matting.html)
 
--
+---
 ###### 关于我们
 皮卡智能（英文名：PicUP.AI）是杭州王道起兮科技有限公司旗下产品
 
