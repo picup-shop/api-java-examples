@@ -2,7 +2,7 @@
 
 ##### 使用示例
 如果想要直接看到调用API的结果图片，在ApiMattingExample.java下更改APIKEY，图片的输入路径和输出路径即可
-(```)
+(```) 
    public class ApiMattingExample {
    static {
       API_KEY = "账号获取的APIKEY";
@@ -16,7 +16,7 @@
         new ApiMattingExample().universalReturnsBinary();
    }
 }
-(```)
+(```) 
 
 
 ##### 注：更多API接口的详细信息请参考官网的API文档(示例项目的代码会根据官网的API文档同步更新)
