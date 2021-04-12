@@ -13,9 +13,9 @@ import java.util.*;
 public class ApiMattingRequestExample {
 
     //请登录picup.shop查看你的API密钥
-    public static final String API_KEY;
+    public static final String API_KEY = "";
     //请求地址
-    public static final String REQUEST_URL;
+    public static final String REQUEST_URL = "http://www.picup.shop/api/v1";
     //json
     public static Gson gson;
     //API请求方法
@@ -29,8 +29,6 @@ public class ApiMattingRequestExample {
 
     //初始化
     static {
-        API_KEY = "";
-        REQUEST_URL = "http://www.picup.shop/api/v1";
         gson = new GsonBuilder().create();
         apiMattingRequest = new ApiMattingRequest(API_KEY);
         INPUT_IMAGE_PATH = "/xxx/xxx/xx.jpeg";
