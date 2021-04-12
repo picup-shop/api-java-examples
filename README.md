@@ -1,7 +1,7 @@
 # 皮卡智能抠图API接口项目示例代码
 
 #### 使用示例
-如果想要直接看到调用API的结果图片，在ApiMattingExample.java下更改APIKEY，图片的输入路径和输出路径即可
+Clone下此项目，在ApiMattingExample.java下更改APIKEY，图片的输入路径和输出路径即可 注:(*示例代码仅供参考，如需使用请结合项目实际情况做出更改*)
 ```java
    public class ApiMattingExample {
    public static String APIKEY = "账号获取到的APIKEY"; 
@@ -18,7 +18,6 @@
      }
   }
 ```
-
 
 ##### 注：更多API接口的详细信息请参考官网的API文档(示例项目的代码会根据官网的API文档同步更新)
 [皮卡智能抠图](http://www.picup.shop/apidoc-image-matting.html)
