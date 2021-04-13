@@ -34,7 +34,7 @@ public class ApiMattingRequestExample {
         apiMattingRequest = new ApiMattingRequest(API_KEY);
         //示例请求图片
         images = new ArrayList<>();
-        //测试除风格迁移接口之外的所有接口图片
+        //测试物体,通用,头像，人像 图片
         images.add("images/test.jpeg");
         //风格迁移示例图片
         images.add("images/cat.jpeg");
