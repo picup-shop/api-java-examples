@@ -14,15 +14,13 @@ import java.util.*;
 public class ApiMattingRequestExample {
 
     //请登录picup.shop查看你的API密钥
-    public static final String API_KEY = "b3657935cf564118b66db1feb8a122f0";
+    public static final String API_KEY = "此处填入你账号的API密钥";
     //请求地址
     public static final String REQUEST_URL = "http://www.picup.shop/api/v1";
     //json
     public static Gson gson;
     //API请求方法
     public static ApiMattingRequest apiMattingRequest;
-    //输入的图片路径
-    public static String INPUT_IMAGE_PATH;
     //输出指定路径
     public static String OUT_PUT_PATH;
     //图片URL
