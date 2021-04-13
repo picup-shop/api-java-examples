@@ -41,10 +41,14 @@ public class ApiMattingRequestExample {
         //风格迁移示例图片
         images.add("images/cat.jpeg");
         images.add("images/style.jpeg");
+        //图像修复测试图片
+        images.add("images/image_fix.jpeg");
+        images.add("images/mask.jpeg");
         //图片地址
         IMAGE_URL = "https://c-ssl.duitang.com/uploads/item/201908/08/20190808151534_tdivh.thumb.1000_0.jpg";
-        //此路径是为了方便展示API调用结果的图片，实际API调用返回的图片结果可以根据项目需求改动
-        OUT_PUT_PATH = System.getProperty("user.dir") + "/src/main/resources/results";
+        //保存图片到此路径是为了方便展示API调用结果的图片，实际API调用返回的图片结果可以根据项目需求改动
+        //results路径下的是测试示例的结果数据，调用测试方法前可以先删除
+        OUT_PUT_PATH = System.getProperty("user.dir") + "/src/main/resources/results/";
     }
 
     /**
@@ -53,7 +57,7 @@ public class ApiMattingRequestExample {
     public void portraitReturnsBinary() {
         String url = REQUEST_URL + "/matting";
         //是否裁剪至最小非透明区域 （非必填）
-        Boolean crop = null;
+        Boolean crop = false;
         //填充背景色 （非必填）
         String bgColor = "";
         try {
@@ -62,7 +66,7 @@ public class ApiMattingRequestExample {
             String fileName = file.getName();
             byte[] bytes = apiMattingRequest.requestMattingReturnsBinary(url, inputStream, crop, bgColor, fileName);
             if (bytes != null) {
-                FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "/portrait_binary.png");
+                FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "portrait_binary.png");
                 outputStream.write(bytes);
                 outputStream.close();
             }
@@ -77,20 +81,22 @@ public class ApiMattingRequestExample {
      */
     public void portraitReturnsBase64() {
         String url = REQUEST_URL + "/matting2";
-        File file = new File(INPUT_IMAGE_PATH);
         //是否裁剪（非必填）
-        Boolean crop = null;
+        Boolean crop = false;
         //填充背景色 （非必填）
         String bgColor = "1E90FF";
         try {
-            String resultData = apiMattingRequest.requestMattingReturnsBase64(url, file, crop, bgColor);
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
+            File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
+            String fileName = file.getName();
+            String resultData = apiMattingRequest.requestMattingReturnsBase64(url, inputStream, crop, bgColor, fileName);
             if (!isEmpty(resultData)) {
                 JsonObject jsonObject = gson.fromJson(resultData, JsonObject.class);
                 if (jsonObject.get("code").getAsInt() == 0) {
                     JsonObject data = jsonObject.getAsJsonObject("data");
                     String imageBase64 = data.get("imageBase64").getAsString();
                     byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "");
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "portrait_base64.png");
                     outputStream.write(bytes);
                     outputStream.close();
                 }
@@ -109,7 +115,7 @@ public class ApiMattingRequestExample {
         //抠图类型 1-人像抠图
         Integer mattingType = 1;
         //是否裁剪 （非必填）
-        Boolean crop = null;
+        Boolean crop = false;
         //填充背景色 （非必填）
         String bgColor = "";
         //图片网络地址 (必填)
@@ -122,7 +128,7 @@ public class ApiMattingRequestExample {
                     JsonObject data = jsonObject.getAsJsonObject("data");
                     String imageBase64 = data.get("imageBase64").getAsString();
                     byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "");
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "portrait_url.png");
                     outputStream.write(bytes);
                     outputStream.close();
                 }
@@ -138,15 +144,17 @@ public class ApiMattingRequestExample {
      */
     public void objectReturnsBinary() {
         String url = REQUEST_URL + "/matting?mattingType=2";
-        File file = new File(INPUT_IMAGE_PATH);
         //是否裁剪至最小非透明区域 （非必填）
-        Boolean crop = true;
+        Boolean crop = false;
         //填充背景色 （非必填）
         String bgColor = "BA55D3";
         try {
-            byte[] bytes = apiMattingRequest.requestMattingReturnsBinary(url, file, crop, bgColor);
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
+            File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
+            String fileName = file.getName();
+            byte[] bytes = apiMattingRequest.requestMattingReturnsBinary(url, inputStream, crop, bgColor, fileName);
             if (bytes != null) {
-                FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "out put image path");
+                FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "object_binary.png");
                 outputStream.write(bytes);
                 outputStream.close();
             }
@@ -161,20 +169,22 @@ public class ApiMattingRequestExample {
      */
     public void objectReturnsBase64() {
         String url = REQUEST_URL + "/matting2?mattingType=2";
-        File file = new File(INPUT_IMAGE_PATH);
         //是否裁剪至最小非透明区域 （非必填）
         Boolean crop = true;
         //填充背景色 （非必填）
         String bgColor = "EE8262";
         try {
-            String resultData = apiMattingRequest.requestMattingReturnsBase64(url, file, crop, bgColor);
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
+            File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
+            String fileName = file.getName();
+            String resultData = apiMattingRequest.requestMattingReturnsBase64(url, inputStream, crop, bgColor, fileName);
             if (!isEmpty(resultData)) {
                 JsonObject jsonObject = gson.fromJson(resultData, JsonObject.class);
                 if (jsonObject.get("code").getAsInt() == 0) { // 请求成功正确返回数据
                     JsonObject data = jsonObject.getAsJsonObject("data");
                     String imageBase64 = data.get("imageBase64").getAsString();
                     byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "out put image path");
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "object_binary.png");
                     outputStream.write(bytes);
                     outputStream.close();
                 }
@@ -207,7 +217,7 @@ public class ApiMattingRequestExample {
                     JsonObject data = jsonObject.getAsJsonObject("data");
                     String imageBase64 = data.get("imageBase64").getAsString();
                     byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "out image path");
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "object_url.png");
                     outputStream.write(bytes);
                     outputStream.close();
                 }
@@ -223,15 +233,17 @@ public class ApiMattingRequestExample {
      */
     public void universalReturnsBinary() {
         String url = REQUEST_URL + "/matting?mattingType=6";
-        File file = new File(INPUT_IMAGE_PATH);
         //是否裁剪至最小非透明区域 （非必填）
         Boolean crop = false;
         //填充背景色 （非必填）
         String bgColor = "EE6363";
         try {
-            byte[] bytes = apiMattingRequest.requestMattingReturnsBinary(url, file, crop, bgColor);
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
+            File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
+            String fileName = file.getName();
+            byte[] bytes = apiMattingRequest.requestMattingReturnsBinary(url, inputStream, crop, bgColor, fileName);
             if (bytes != null) {
-                FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "out put image path");
+                FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "universal_binary.png");
                 outputStream.write(bytes);
                 outputStream.close();
             }
@@ -246,20 +258,22 @@ public class ApiMattingRequestExample {
      */
     public void universalReturnsBase64() {
         String url = REQUEST_URL + "/matting2?mattingType=6";
-        File file = new File(INPUT_IMAGE_PATH);
         //是否裁剪至最小非透明区域 （非必填）
-        Boolean crop = null;
+        Boolean crop = false;
         //填充背景色 （非必填）
         String bgColor = "EE6363";
         try {
-            String resultData = apiMattingRequest.requestMattingReturnsBase64(url, file, crop, bgColor);
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
+            File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
+            String fileName = file.getName();
+            String resultData = apiMattingRequest.requestMattingReturnsBase64(url, inputStream, crop, bgColor, fileName);
             if (!isEmpty(resultData)) {
                 JsonObject jsonObject = gson.fromJson(resultData, JsonObject.class);
                 if (jsonObject.get("code").getAsInt() == 0) { // 请求成功正确返回数据
                     JsonObject data = jsonObject.getAsJsonObject("data");
                     String imageBase64 = data.get("imageBase64").getAsString();
                     byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "out put image path");
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "universal_base64.png");
                     outputStream.write(bytes);
                     outputStream.close();
                 }
@@ -291,7 +305,7 @@ public class ApiMattingRequestExample {
                     JsonObject data = jsonObject.getAsJsonObject("data");
                     String imageBase64 = data.get("imageBase64").getAsString();
                     byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "");
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "universal_url.png");
                     outputStream.write(bytes);
                     outputStream.close();
                 }
@@ -307,13 +321,15 @@ public class ApiMattingRequestExample {
      */
     public void avatarReturnsBinary() {
         String url = REQUEST_URL + "/matting?mattingType=3";
-        File file = new File(INPUT_IMAGE_PATH);
         //是否裁剪至最小非透明区域 （非必填）
         Boolean crop = null;
         try {
-            byte[] bytes = apiMattingRequest.requestMattingReturnsBinary(url, file, crop, null);
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
+            File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
+            String fileName = file.getName();
+            byte[] bytes = apiMattingRequest.requestMattingReturnsBinary(url, inputStream, crop, null, fileName);
             if (bytes != null) {
-                FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "out put image path");
+                FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "avatar_binary.png");
                 outputStream.write(bytes);
                 outputStream.close();
             }
@@ -328,18 +344,20 @@ public class ApiMattingRequestExample {
      */
     public void avatarReturnsBase64() {
         String url = REQUEST_URL + "/matting2?mattingType=3";
-        File file = new File(INPUT_IMAGE_PATH);
         //是否裁剪至最小非透明区域 （非必填）
         Boolean crop = null;
         try {
-            String resultData = apiMattingRequest.requestMattingReturnsBase64(url, file, crop, null);
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
+            File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
+            String fileName = file.getName();
+            String resultData = apiMattingRequest.requestMattingReturnsBase64(url, inputStream, crop, null, fileName);
             if (!isEmpty(resultData)) {
                 JsonObject jsonObject = gson.fromJson(resultData, JsonObject.class);
                 if (jsonObject.get("code").getAsInt() == 0) { // 请求成功正确返回数据
                     JsonObject data = jsonObject.getAsJsonObject("data");
                     String imageBase64 = data.get("imageBase64").getAsString();
                     byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "");
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "avatar_base64.png");
                     outputStream.write(bytes);
                     outputStream.close();
                 }
@@ -369,7 +387,7 @@ public class ApiMattingRequestExample {
                     JsonObject data = jsonObject.getAsJsonObject("data");
                     String imageBase64 = data.get("imageBase64").getAsString();
                     byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "");
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "avatar_url.png");
                     outputStream.write(bytes);
                     outputStream.close();
                 }
@@ -387,7 +405,7 @@ public class ApiMattingRequestExample {
         String url = REQUEST_URL + "/idphoto/printLayout";
         Map<String, Object> params = new HashMap<>();
         try {
-            byte[] bytes = Files.readAllBytes(Paths.get(INPUT_IMAGE_PATH));
+            byte[] bytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(0)).getPath()));
             String base64 = Base64.getEncoder().encodeToString(bytes);
             //头像文件图片的Base64
             params.put("base64", base64);
@@ -414,8 +432,8 @@ public class ApiMattingRequestExample {
                 JsonObject jsonObject = gson.fromJson(resultData, JsonObject.class);
                 if (jsonObject.get("code").getAsInt() == 0) {
                     JsonObject data = jsonObject.getAsJsonObject("data");
-                    //输出TXT格式
-                    PrintWriter printWriter = new PrintWriter(new FileWriter(OUT_PUT_PATH + ""));
+                    //输出json格式
+                    PrintWriter printWriter = new PrintWriter(new FileWriter(OUT_PUT_PATH + "id_photo.json"));
                     printWriter.println(data.toString());
                     printWriter.close();
                 }
@@ -431,11 +449,13 @@ public class ApiMattingRequestExample {
      */
     public void beautifyReturnsBinary() {
         String url = REQUEST_URL + "/matting?mattingType=4";
-        File file = new File(INPUT_IMAGE_PATH);
         try {
-            byte[] bytes = apiMattingRequest.requestMattingReturnsBinary(url, file);
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
+            File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
+            String fileName = file.getName();
+            byte[] bytes = apiMattingRequest.requestMattingReturnsBinary(url, inputStream, fileName);
             if (bytes != null) {
-                FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "");
+                FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "beautify_binary.png");
                 outputStream.write(bytes);
                 outputStream.close();
             }
@@ -450,16 +470,18 @@ public class ApiMattingRequestExample {
      */
     public void beautifyReturnsBase64() {
         String url = REQUEST_URL + "/matting2?mattingType=4";
-        File file = new File(INPUT_IMAGE_PATH);
-        String resultData = apiMattingRequest.requestMattingReturnsBase64(url, file);
         try {
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
+            File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
+            String fileName = file.getName();
+            String resultData = apiMattingRequest.requestMattingReturnsBase64(url, inputStream, fileName);
             if (!isEmpty(resultData)) {
                 JsonObject jsonObject = gson.fromJson(resultData, JsonObject.class);
                 if (jsonObject.get("code").getAsInt() == 0) {
                     JsonObject data = jsonObject.getAsJsonObject("data");
                     String imageBase64 = data.get("imageBase64").getAsString();
                     byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "out put image path");
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "beautify_base64.png");
                     outputStream.write(bytes);
                     outputStream.close();
                 }
@@ -477,18 +499,22 @@ public class ApiMattingRequestExample {
         String url = REQUEST_URL + "/imageFix";
         Map<String, Object> params = new HashMap<>();
         try {
-            byte[] bytes = Files.readAllBytes(Paths.get(INPUT_IMAGE_PATH));
+            //修复的base64图片
+            byte[] bytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(3)).getPath()));
             String base64 = Base64.getEncoder().encodeToString(bytes);
-            //图片文件base64字符串
             params.put("base64", base64);
+            //mask base64图片
+            byte[] maskBytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(4)).getPath()));
+            String maskBase64 = Base64.getEncoder().encodeToString(maskBytes);
+            params.put("maskBase64", maskBase64);
             //矩形区域，支持多个数组
-            List<Map<String, Integer>> rectangles = new ArrayList<>();
-            Map<String, Integer> rectangle = new HashMap<>();
-            rectangle.put("height", 100);
-            rectangle.put("width", 100);
-            rectangle.put("x", 150);
-            rectangle.put("y", 280);
-            params.put("rectangles", rectangles);
+            //List<Map<String, Integer>> rectangles = new ArrayList<>();
+            //Map<String, Integer> rectangle = new HashMap<>();
+            //rectangle.put("height", 100);
+            //rectangle.put("width", 100);
+            //rectangle.put("x", 150);
+            //rectangle.put("y", 280);
+            //params.put("rectangles", rectangles);
             //mask图片文件转为base64字符串, 同时支持单通道，三通道，四通道黑白图片，修复区域为纯白色，其它区域为黑色。如果此字段有值，则矩形区域参数无效
             //params.put("maskBase64", "maskBase64");
             String result = apiMattingRequest.requestMattingImageFix(url, params);
@@ -496,8 +522,8 @@ public class ApiMattingRequestExample {
                 JsonObject jsonObject = gson.fromJson(result, JsonObject.class);
                 if (jsonObject.get("code").getAsInt() == 0) {
                     JsonObject data = jsonObject.getAsJsonObject("data");
-                    //输出TXT格式以查看接口返回结果
-                    PrintWriter printWriter = new PrintWriter(new FileWriter(OUT_PUT_PATH + ""));
+                    //输出json格式以查看接口返回结果
+                    PrintWriter printWriter = new PrintWriter(new FileWriter(OUT_PUT_PATH + "image_fix.json"));
                     printWriter.println(data.toString());
                     printWriter.close();
                 }
@@ -513,11 +539,13 @@ public class ApiMattingRequestExample {
      */
     public void animeReturnsBinary() {
         String url = REQUEST_URL + "/matting?mattingType=11";
-        File file = new File(INPUT_IMAGE_PATH);
         try {
-            byte[] bytes = apiMattingRequest.requestMattingReturnsBinary(url, file);
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
+            File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
+            String fileName = file.getName();
+            byte[] bytes = apiMattingRequest.requestMattingReturnsBinary(url, inputStream, fileName);
             if (bytes != null) {
-                FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "out put image path");
+                FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "anime_binary.png");
                 outputStream.write(bytes);
                 outputStream.close();
             }
@@ -532,16 +560,18 @@ public class ApiMattingRequestExample {
      */
     public void animeReturnsBase64() {
         String url = REQUEST_URL + "/matting2?mattingType=11";
-        File file = new File(INPUT_IMAGE_PATH);
         try {
-            String result = apiMattingRequest.requestMattingReturnsBase64(url, file);
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
+            File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
+            String fileName = file.getName();
+            String result = apiMattingRequest.requestMattingReturnsBase64(url, inputStream, fileName);
             if (!isEmpty(result)) {
                 JsonObject jsonObject = gson.fromJson(result, JsonObject.class);
                 if (jsonObject.get("code").getAsInt() == 0) {
                     JsonObject data = jsonObject.getAsJsonObject("data");
                     String imageBase64 = data.get("imageBase64").getAsString();
                     byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "");
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "anime_base64.png");
                     outputStream.write(bytes);
                 }
             }
@@ -568,7 +598,7 @@ public class ApiMattingRequestExample {
                     JsonObject data = jsonObject.getAsJsonObject("data");
                     String imageBase64 = data.get("imageBase64").getAsString();
                     byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "out put image path");
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "anime_url.png");
                     outputStream.write(bytes);
                     outputStream.close();
                 }
@@ -587,11 +617,11 @@ public class ApiMattingRequestExample {
         Map<String, Object> params = new HashMap<>();
         try {
             //待转化的图片Base64
-            byte[] bytes = Files.readAllBytes(Paths.get(INPUT_IMAGE_PATH));
+            byte[] bytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(1)).getPath()));
             String contentBase64 = Base64.getEncoder().encodeToString(bytes);
             params.put("contentBase64", contentBase64);
             //风格图片文件的Base64,此处可以选择自己想要的风格化图片
-            byte[] bytes1 = Files.readAllBytes(Paths.get("INPUT_IMAGE_PATH"));
+            byte[] bytes1 = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(2)).getPath()));
             String styleBase64 = Base64.getEncoder().encodeToString(bytes1);
             params.put("styleBase64", styleBase64);
             String result = apiMattingRequest.requestMattingStyleTransfer(url, params);
@@ -599,7 +629,7 @@ public class ApiMattingRequestExample {
                 JsonObject jsonObject = gson.fromJson(result, JsonObject.class);
                 if (jsonObject.get("code").getAsInt() == 0) {
                     //输出TXT格式
-                    PrintWriter printWriter = new PrintWriter(new FileWriter(OUT_PUT_PATH + "xxx.txt"));
+                    PrintWriter printWriter = new PrintWriter(new FileWriter(OUT_PUT_PATH + "style.json"));
                     printWriter.println(jsonObject.get("data").getAsString());
                     printWriter.close();
                 }
@@ -616,7 +646,7 @@ public class ApiMattingRequestExample {
 
     public static void main(String[] args) throws IOException {
         ApiMattingRequestExample example = new ApiMattingRequestExample();
-        example.portraitReturnsBinary();
+        //example.portraitReturnsBinary();
         //example.portraitReturnsBase64();
         //example.portraitByImageUrl();
         //example.idPhoto();
@@ -631,7 +661,7 @@ public class ApiMattingRequestExample {
         //example.avatarByImageUrl();
         //example.beautifyReturnsBinary();
         //example.beautifyReturnsBase64();
-        //example.imageFix();
+        example.imageFix();
         //example.animeReturnsBinary();
         //example.animeReturnsBase64();
         //example.animeByImageUrl();
