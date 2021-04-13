@@ -1,19 +1,14 @@
 # 皮卡智能抠图API接口项目示例代码
 
 #### 使用示例
-Clone下此项目，在ApiMattingExample.java下更改APIKEY，图片的输入路径和输出路径即可 注:(*示例代码仅供参考，如需使用请结合项目实际情况做出更改*)
+- 使用命令git clone https://github.com/picup-shop/api-java-examples.git Clone下此项目
+- 在ApiMattingExample.java下更改APIKEY，在main方法调用需要执行的API接口方法即可 注:(*示例代码仅供参考，如需使用请结合项目实际情况做出更改*)
 ```java
    public class ApiMattingExample {
-   public static String APIKEY = "账号获取到的APIKEY"; 
-    
-   static {
-      INPUT_IMAGE_PATH = "图片所在的路径";
-      //OUT_PUT_PATH可以为有后缀名全路径，也可以为固定路径 + 加上图片名称和后缀方便测试每一个方法
-      OUT_PUT_PATH = "设置你需要输出图片到指定的路径";
-   }
+   public static String APIKEY = "账号获取到的APIKEY";
    
    public static void main (String args[]) {
-        //调用你所需要的接口方法,执行成功后到设置的输出路径查看图片修改的结果
+        //调用你需要执行的API接口方法,执行成功后在当前项目的resource/results文件下即可看到结果数据
         new ApiMattingExample().universalReturnsBinary();
      }
   }
