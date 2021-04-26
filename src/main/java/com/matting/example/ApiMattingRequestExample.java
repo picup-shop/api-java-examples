@@ -16,7 +16,7 @@ public class ApiMattingRequestExample {
     //请登录picup.shop查看你的API密钥
     public static final String API_KEY = "此处填入你账号的API密钥";
     //请求地址
-    public static final String REQUEST_URL = "http://www.picup.shop/api/v1";
+    public static final String REQUEST_URL = "https://picupapi.tukeli.net/api/v1";
     //json
     public static Gson gson;
     //API请求方法
