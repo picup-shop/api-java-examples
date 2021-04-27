@@ -403,6 +403,10 @@ public class ApiMattingRequestExample {
         String url = REQUEST_URL + "/idphoto/printLayout";
         Map<String, Object> params = new HashMap<>();
         try {
+            //注：此处在Windows下获取时会报路径的错误,需要截取一下,改成如下形式
+            //String path = this.getClass().getClassLoader().getResource(images.get(0)).getPath();
+            //String subPath = path.substring(1);
+            //byte[] bytes = Files.readAllBytes(Paths.get(subPath));
             byte[] bytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(0)).getPath()));
             String base64 = Base64.getEncoder().encodeToString(bytes);
             //头像文件图片的Base64
@@ -619,6 +623,10 @@ public class ApiMattingRequestExample {
         Map<String, Object> params = new HashMap<>();
         try {
             //待转化的图片Base64
+            //注：此处在Windows下获取时会报路径的错误,需要截取一下,改成如下形式
+            //String path = this.getClass().getClassLoader().getResource(images.get(1)).getPath();
+            //String subPath = path.substring(1);
+            //byte[] bytes = Files.readAllBytes(Paths.get(subPath));
             byte[] bytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(1)).getPath()));
             String contentBase64 = Base64.getEncoder().encodeToString(bytes);
             params.put("contentBase64", contentBase64);
