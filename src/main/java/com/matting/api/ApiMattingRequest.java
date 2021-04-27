@@ -29,6 +29,7 @@ public class ApiMattingRequest {
             byte [] bytes = (byte[]) map.get("bytes");
             return bytes;
         }
+        //请求错误时会返回JSON格式的数据
         System.out.println(map.get("json").toString());
         return null;
     }
@@ -40,6 +41,7 @@ public class ApiMattingRequest {
             byte [] bytes = (byte[]) map.get("bytes");
             return bytes;
         }
+        //请求错误时会返回JSON格式的数据
         System.out.println(map.get("json").toString());
         return null;
     }
@@ -119,6 +121,7 @@ public class ApiMattingRequest {
 
     private MultipartEntityBuilder setMultipartEntity(File file, InputStream inputStream, Boolean crop, String bgColor, String fileName) {
         MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
+        //浏览器兼容模式
         entityBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
         if (crop != null) {
             entityBuilder.addTextBody("crop", String.valueOf(crop));
@@ -127,13 +130,12 @@ public class ApiMattingRequest {
             entityBuilder.addTextBody("bgcolor", bgColor);
         }
         if (file != null) {
-            FileBody fileBody = new FileBody(file);
-            entityBuilder.addPart("file", fileBody);
+            entityBuilder.addBinaryBody("file", file);
         }
         if (inputStream != null) {
-            InputStreamBody inputStreamBody = new InputStreamBody(inputStream, ContentType.DEFAULT_BINARY, fileName);
-            entityBuilder.addPart("file", inputStreamBody);
+            entityBuilder.addBinaryBody("file", inputStream, ContentType.DEFAULT_BINARY, fileName);
         }
+        //此处也可以不加，默认就是MULTIPART_FORM_DATA类型
         entityBuilder.setContentType(ContentType.MULTIPART_FORM_DATA);
         return entityBuilder;
     }
