@@ -498,6 +498,10 @@ public class ApiMattingRequestExample {
         Map<String, Object> params = new HashMap<>();
         try {
             //修复的base64图片
+            //注：此处在Windows下获取时会报路径的错误,需要截取一下,改成如下形式
+            //String path = this.getClass().getClassLoader().getResource(images.get(3)).getPath();
+            //String subPath = path.substring(1);
+            //byte[] bytes = Files.readAllBytes(Paths.get(subPath));
             byte[] bytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(3)).getPath()));
             String base64 = Base64.getEncoder().encodeToString(bytes);
             params.put("base64", base64);
