@@ -14,7 +14,7 @@ import java.util.*;
 public class ApiMattingRequestExample {
 
     //请登录picup.shop查看你的API密钥
-    public static final String API_KEY = "此处填入你账号的API密钥";
+    public static final String API_KEY = "";
     //请求地址
     public static final String REQUEST_URL = "https://picupapi.tukeli.net/api/v1";
     //json
@@ -28,6 +28,7 @@ public class ApiMattingRequestExample {
 
     //示例请求的图片
     public static List<String> images;
+
     //初始化
     static {
         gson = new GsonBuilder().create();
@@ -182,7 +183,7 @@ public class ApiMattingRequestExample {
                     JsonObject data = jsonObject.getAsJsonObject("data");
                     String imageBase64 = data.get("imageBase64").getAsString();
                     byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "object_binary.png");
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "object_base64.png");
                     outputStream.write(bytes);
                     outputStream.close();
                 }
@@ -196,8 +197,7 @@ public class ApiMattingRequestExample {
     /**
      * 物体抠图（通过图片地址返回base64字符串）
      */
-    public void
-    objectByImageUrl() {
+    public void objectByImageUrl() {
         String url = REQUEST_URL + "/mattingByUrl";
         //抠图类型 1-人像抠图
         Integer mattingType = 2;
@@ -261,7 +261,7 @@ public class ApiMattingRequestExample {
         //填充背景色 （非必填）
         String bgColor = "EE6363";
         try {
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(3));
             File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
             String fileName = file.getName();
             String resultData = apiMattingRequest.requestMattingReturnsBase64(url, inputStream, crop, bgColor, fileName);
@@ -271,7 +271,7 @@ public class ApiMattingRequestExample {
                     JsonObject data = jsonObject.getAsJsonObject("data");
                     String imageBase64 = data.get("imageBase64").getAsString();
                     byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "universal_base64.png");
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "universal_base64.webp");
                     outputStream.write(bytes);
                     outputStream.close();
                 }
@@ -290,9 +290,9 @@ public class ApiMattingRequestExample {
         //抠图类型 1-人像抠图
         Integer mattingType = 6;
         //是否裁剪 （非必填）
-        Boolean crop = null;
+        Boolean crop = false;
         //填充背景色 （非必填）
-        String bgColor = "EE6363";
+        String bgColor = "";
         //图片网络地址 (必填)
         String imageUrl = IMAGE_URL;
         try {
@@ -303,7 +303,7 @@ public class ApiMattingRequestExample {
                     JsonObject data = jsonObject.getAsJsonObject("data");
                     String imageBase64 = data.get("imageBase64").getAsString();
                     byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "universal_url.png");
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "universal_url.webp");
                     outputStream.write(bytes);
                     outputStream.close();
                 }
@@ -404,10 +404,10 @@ public class ApiMattingRequestExample {
         Map<String, Object> params = new HashMap<>();
         try {
             //注：此处在Windows下获取时会报路径的错误,需要截取一下,改成如下形式
-            //String path = this.getClass().getClassLoader().getResource(images.get(0)).getPath();
-            //String subPath = path.substring(1);
-            //byte[] bytes = Files.readAllBytes(Paths.get(subPath));
-            byte[] bytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(0)).getPath()));
+            String path = this.getClass().getClassLoader().getResource(images.get(0)).getPath();
+            String subPath = path.substring(1);
+            byte[] bytes = Files.readAllBytes(Paths.get(subPath));
+            //byte[] bytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(0)).getPath()));
             String base64 = Base64.getEncoder().encodeToString(bytes);
             //头像文件图片的Base64
             params.put("base64", base64);
@@ -503,14 +503,16 @@ public class ApiMattingRequestExample {
         try {
             //修复的base64图片
             //注：此处在Windows下获取时会报路径的错误,需要截取一下,改成如下形式
-            //String path = this.getClass().getClassLoader().getResource(images.get(3)).getPath();
-            //String subPath = path.substring(1);
-            //byte[] bytes = Files.readAllBytes(Paths.get(subPath));
-            byte[] bytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(3)).getPath()));
+            String path = this.getClass().getClassLoader().getResource(images.get(3)).getPath();
+            String subPath = path.substring(1);
+            byte[] bytes = Files.readAllBytes(Paths.get(subPath));
+            //byte[] bytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(3)).getPath()));
             String base64 = Base64.getEncoder().encodeToString(bytes);
             params.put("base64", base64);
             //mask base64图片
-            byte[] maskBytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(4)).getPath()));
+            path = this.getClass().getClassLoader().getResource(images.get(4)).getPath();
+            subPath = path.substring(1);
+            byte[] maskBytes = Files.readAllBytes(Paths.get(subPath));
             String maskBase64 = Base64.getEncoder().encodeToString(maskBytes);
             params.put("maskBase64", maskBase64);
             //矩形区域，支持多个数组
@@ -624,14 +626,17 @@ public class ApiMattingRequestExample {
         try {
             //待转化的图片Base64
             //注：此处在Windows下获取时会报路径的错误,需要截取一下,改成如下形式
-            //String path = this.getClass().getClassLoader().getResource(images.get(1)).getPath();
-            //String subPath = path.substring(1);
-            //byte[] bytes = Files.readAllBytes(Paths.get(subPath));
-            byte[] bytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(1)).getPath()));
+            String path = this.getClass().getClassLoader().getResource(images.get(1)).getPath();
+            String subPath = path.substring(1);
+            byte[] bytes = Files.readAllBytes(Paths.get(subPath));
+            //byte[] bytes = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(1)).getPath()));
             String contentBase64 = Base64.getEncoder().encodeToString(bytes);
             params.put("contentBase64", contentBase64);
             //风格图片文件的Base64,此处可以选择自己想要的风格化图片
-            byte[] bytes1 = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(2)).getPath()));
+            String path2 = this.getClass().getClassLoader().getResource(images.get(2)).getPath();
+            String subPath2 = path2.substring(1);
+            byte[] bytes1 = Files.readAllBytes(Paths.get(subPath2));
+            //byte[] bytes1 = Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource(images.get(2)).getPath()));
             String styleBase64 = Base64.getEncoder().encodeToString(bytes1);
             params.put("styleBase64", styleBase64);
             String result = apiMattingRequest.requestMattingStyleTransfer(url, params);
@@ -640,7 +645,7 @@ public class ApiMattingRequestExample {
                 if (jsonObject.get("code").getAsInt() == 0) {
                     //输出TXT格式
                     PrintWriter printWriter = new PrintWriter(new FileWriter(OUT_PUT_PATH + "style.json"));
-                    printWriter.println(jsonObject.get("data").getAsString());
+                    printWriter.println(jsonObject.toString());
                     printWriter.close();
                 }
             }
@@ -650,31 +655,84 @@ public class ApiMattingRequestExample {
         }
     }
 
+    /**
+     * 抠图并返回人脸检测点信息
+     */
+    public void mattingAndAnalysis() {
+        String url = REQUEST_URL + "/mattingAndAnalysis?mattingType=3";
+        Boolean crop = false;
+        try {
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(3));
+            File file = new File(this.getClass().getClassLoader().getResource(images.get(3)).getPath());
+            String fileName = file.getName();
+            String result = apiMattingRequest.requestMattingReturnsBase64(url, inputStream, crop, null, fileName);
+            if (!isEmpty(result)) {
+                JsonObject resultJson = gson.fromJson(result, JsonObject.class);
+                if (resultJson.get("code").getAsInt() == 0) {
+                    JsonObject data = resultJson.getAsJsonObject("data");
+                    //输出图片
+                    String imageBase64 = data.get("imageBase64").getAsString();
+                    byte[] bytes = Base64.getDecoder().decode(imageBase64);
+                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "matting_analysis.png");
+                    outputStream.write(bytes);
+                    outputStream.close();
+                    //输出人脸检测点信息
+                    PrintWriter printWriter = new PrintWriter(new FileWriter(OUT_PUT_PATH + "matting_analysis.json"));
+                    printWriter.println(data.get("faceAnalysis").toString());
+                    printWriter.close();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private boolean isEmpty(String str) {
         return (str == null || str.equals(""));
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         ApiMattingRequestExample example = new ApiMattingRequestExample();
-        //example.portraitReturnsBinary();
-        //example.portraitReturnsBase64();
-        //example.portraitByImageUrl();
-        //example.idPhoto();
-        //example.objectReturnsBinary();
-        //example.objectReturnsBase64();
-        //example.objectByImageUrl();
-        //example.universalReturnsBinary();
-        //example.universalReturnsBase64();
-        //example.universalByImageUrl();
-        //example.avatarReturnsBinary();
-        //example.avatarReturnsBase64();
-        //example.avatarByImageUrl();
-        //example.beautifyReturnsBinary();
-        //example.beautifyReturnsBase64();
-        example.imageFix();
-        //example.animeReturnsBinary();
-        //example.animeReturnsBase64();
-        //example.animeByImageUrl();
-        //example.styleTransfer();;
+//        example.portraitReturnsBinary();
+//        Thread.sleep(1000);
+//        example.portraitReturnsBase64();
+//        Thread.sleep(1000);
+//        example.portraitByImageUrl();
+//        Thread.sleep(1000);
+//        example.idPhoto();
+//        Thread.sleep(1000);
+//        example.objectReturnsBinary();
+//        Thread.sleep(1000);
+//        example.objectReturnsBase64();
+//        Thread.sleep(1000);
+//        example.objectByImageUrl();
+//        Thread.sleep(1000);
+//        example.universalReturnsBinary();
+//        Thread.sleep(1000);
+//        example.universalReturnsBase64();
+//        Thread.sleep(1000);
+//        example.universalByImageUrl();
+//        Thread.sleep(1000);
+//        example.avatarReturnsBinary();
+//        Thread.sleep(1000);
+//        example.avatarReturnsBase64();
+//        Thread.sleep(1000);
+//        example.avatarByImageUrl();
+//        Thread.sleep(1000);
+//        example.beautifyReturnsBinary();
+//        Thread.sleep(1000);
+//        example.beautifyReturnsBase64();
+//        Thread.sleep(1000);
+//        example.imageFix();
+//        Thread.sleep(1000);
+//        example.animeReturnsBinary();
+//        Thread.sleep(1000);
+//        example.animeReturnsBase64();
+//        Thread.sleep(1000);
+//        example.animeByImageUrl();
+//        Thread.sleep(1000);
+//        example.styleTransfer();;
+//          Thread.sleep(1000);
+//          example.mattingAndAnalysis();
     }
 }

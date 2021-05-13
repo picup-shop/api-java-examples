@@ -25,46 +25,52 @@ public class ApiMattingRequest {
     public byte[] requestMattingReturnsBinary(String requestUrl, InputStream inputStream, Boolean crop, String bgColor, String fileName) {
         MultipartEntityBuilder entityBuilder = setMultipartEntity(null, inputStream, crop, bgColor, fileName);
         Map<String, Object> map = HttpUtils.doPostByFileReturnBytes(requestUrl, getHeaders(), entityBuilder);
-        if (map.containsKey("bytes")) {
-            byte [] bytes = (byte[]) map.get("bytes");
-            return bytes;
+        if (map != null) {
+            if (map.containsKey("bytes")) {
+                byte [] bytes = (byte[]) map.get("bytes");
+                return bytes;
+            }
+            System.out.println(map.get("json").toString());
         }
-        //请求错误时会返回JSON格式的数据
-        System.out.println(map.get("json").toString());
         return null;
     }
 
     public byte[] requestMattingReturnsBinary(String requestUrl, File file, Boolean crop, String bgColor) {
         MultipartEntityBuilder entityBuilder = setMultipartEntity(file, null, crop, bgColor, null);
         Map<String, Object> map = HttpUtils.doPostByFileReturnBytes(requestUrl, getHeaders(), entityBuilder);
-        if (map.containsKey("bytes")) {
-            byte [] bytes = (byte[]) map.get("bytes");
-            return bytes;
+        if (map != null) {
+            if (map.containsKey("bytes")) {
+                byte [] bytes = (byte[]) map.get("bytes");
+                return bytes;
+            }
+            System.out.println(map.get("json").toString());
         }
-        //请求错误时会返回JSON格式的数据
-        System.out.println(map.get("json").toString());
         return null;
     }
 
     public byte[] requestMattingReturnsBinary(String requestUrl, File file) {
         MultipartEntityBuilder entityBuilder = setMultipartEntity(file, null, null, null, null);
         Map<String, Object> map = HttpUtils.doPostByFileReturnBytes(requestUrl, getHeaders(), entityBuilder);
-        if (map.containsKey("bytes")) {
-            byte [] bytes = (byte[]) map.get("bytes");
-            return bytes;
+        if (map != null) {
+            if (map.containsKey("bytes")) {
+                byte [] bytes = (byte[]) map.get("bytes");
+                return bytes;
+            }
+            System.out.println(map.get("json").toString());
         }
-        System.out.println(map.get("json").toString());
         return null;
     }
 
     public byte[] requestMattingReturnsBinary(String requestUrl, InputStream inputStream, String fileName) {
         MultipartEntityBuilder entityBuilder = setMultipartEntity(null, inputStream, null, null, fileName);
         Map<String, Object> map = HttpUtils.doPostByFileReturnBytes(requestUrl, getHeaders(), entityBuilder);
-        if (map.containsKey("bytes")) {
-            byte [] bytes = (byte[]) map.get("bytes");
-            return bytes;
+        if (map != null) {
+            if (map.containsKey("bytes")) {
+                byte [] bytes = (byte[]) map.get("bytes");
+                return bytes;
+            }
+            System.out.println(map.get("json").toString());
         }
-        System.out.println(map.get("json").toString());
         return null;
     }
 
