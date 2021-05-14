@@ -655,38 +655,6 @@ public class ApiMattingRequestExample {
         }
     }
 
-    /**
-     * 抠图并返回人脸检测点信息
-     */
-    public void mattingAndAnalysis() {
-        String url = REQUEST_URL + "/mattingAndAnalysis?mattingType=3";
-        Boolean crop = false;
-        try {
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(3));
-            File file = new File(this.getClass().getClassLoader().getResource(images.get(3)).getPath());
-            String fileName = file.getName();
-            String result = apiMattingRequest.requestMattingReturnsBase64(url, inputStream, crop, null, fileName);
-            if (!isEmpty(result)) {
-                JsonObject resultJson = gson.fromJson(result, JsonObject.class);
-                if (resultJson.get("code").getAsInt() == 0) {
-                    JsonObject data = resultJson.getAsJsonObject("data");
-                    //输出图片
-                    String imageBase64 = data.get("imageBase64").getAsString();
-                    byte[] bytes = Base64.getDecoder().decode(imageBase64);
-                    FileOutputStream outputStream = new FileOutputStream(OUT_PUT_PATH + "matting_analysis.png");
-                    outputStream.write(bytes);
-                    outputStream.close();
-                    //输出人脸检测点信息
-                    PrintWriter printWriter = new PrintWriter(new FileWriter(OUT_PUT_PATH + "matting_analysis.json"));
-                    printWriter.println(data.get("faceAnalysis").toString());
-                    printWriter.close();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private boolean isEmpty(String str) {
         return (str == null || str.equals(""));
     }
@@ -732,7 +700,5 @@ public class ApiMattingRequestExample {
 //        example.animeByImageUrl();
 //        Thread.sleep(1000);
 //        example.styleTransfer();;
-//          Thread.sleep(1000);
-//          example.mattingAndAnalysis();
     }
 }
