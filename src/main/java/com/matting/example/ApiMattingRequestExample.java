@@ -56,9 +56,9 @@ public class ApiMattingRequestExample {
     public void portraitReturnsBinary() {
         String url = REQUEST_URL + "/matting";
         //是否裁剪至最小非透明区域 （非必填）
-        Boolean crop = false;
+        //Boolean crop = false;
         //填充背景色 （非必填）
-        String bgColor = "";
+        //String bgColor = "";
         try {
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
             File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
@@ -81,9 +81,9 @@ public class ApiMattingRequestExample {
     public void portraitReturnsBase64() {
         String url = REQUEST_URL + "/matting2";
         //是否裁剪（非必填）
-        Boolean crop = false;
+        //Boolean crop = false;
         //填充背景色 （非必填）
-        String bgColor = "1E90FF";
+        //String bgColor = "1E90FF";
         try {
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
             File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
@@ -114,9 +114,9 @@ public class ApiMattingRequestExample {
         //抠图类型 1-人像抠图
         Integer mattingType = 1;
         //是否裁剪 （非必填）
-        Boolean crop = false;
+        //Boolean crop = false;
         //填充背景色 （非必填）
-        String bgColor = "";
+        //String bgColor = "";
         //图片网络地址 (必填)
         String imageUrl = IMAGE_URL;
         try {
@@ -144,9 +144,9 @@ public class ApiMattingRequestExample {
     public void objectReturnsBinary() {
         String url = REQUEST_URL + "/matting?mattingType=2";
         //是否裁剪至最小非透明区域 （非必填）
-        Boolean crop = false;
+        //Boolean crop = false;
         //填充背景色 （非必填）
-        String bgColor = "BA55D3";
+        //String bgColor = "BA55D3";
         try {
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
             File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
@@ -169,9 +169,9 @@ public class ApiMattingRequestExample {
     public void objectReturnsBase64() {
         String url = REQUEST_URL + "/matting2?mattingType=2";
         //是否裁剪至最小非透明区域 （非必填）
-        Boolean crop = true;
+        //Boolean crop = true;
         //填充背景色 （非必填）
-        String bgColor = "EE8262";
+        //String bgColor = "EE8262";
         try {
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
             File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
@@ -202,9 +202,9 @@ public class ApiMattingRequestExample {
         //抠图类型 1-人像抠图
         Integer mattingType = 2;
         //是否裁剪 （非必填）
-        Boolean crop = true;
+        //Boolean crop = true;
         //填充背景色 （非必填）
-        String bgColor = "CD5555";
+        //String bgColor = "CD5555";
         //图片网络地址 (必填)
         String imageUrl = IMAGE_URL;
         try {
@@ -232,9 +232,9 @@ public class ApiMattingRequestExample {
     public void universalReturnsBinary() {
         String url = REQUEST_URL + "/matting?mattingType=6";
         //是否裁剪至最小非透明区域 （非必填）
-        Boolean crop = false;
+        //Boolean crop = false;
         //填充背景色 （非必填）
-        String bgColor = "EE6363";
+        //String bgColor = "EE6363";
         try {
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
             File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
@@ -257,9 +257,9 @@ public class ApiMattingRequestExample {
     public void universalReturnsBase64() {
         String url = REQUEST_URL + "/matting2?mattingType=6";
         //是否裁剪至最小非透明区域 （非必填）
-        Boolean crop = false;
+        //Boolean crop = false;
         //填充背景色 （非必填）
-        String bgColor = "EE6363";
+        //String bgColor = "EE6363";
         try {
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(3));
             File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
@@ -290,9 +290,9 @@ public class ApiMattingRequestExample {
         //抠图类型 1-人像抠图
         Integer mattingType = 6;
         //是否裁剪 （非必填）
-        Boolean crop = false;
+        //Boolean crop = false;
         //填充背景色 （非必填）
-        String bgColor = "";
+        //String bgColor = "";
         //图片网络地址 (必填)
         String imageUrl = IMAGE_URL;
         try {
@@ -320,7 +320,7 @@ public class ApiMattingRequestExample {
     public void avatarReturnsBinary() {
         String url = REQUEST_URL + "/matting?mattingType=3";
         //是否裁剪至最小非透明区域 （非必填）
-        Boolean crop = null;
+        //Boolean crop = null;
         try {
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
             File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
@@ -343,7 +343,7 @@ public class ApiMattingRequestExample {
     public void avatarReturnsBase64() {
         String url = REQUEST_URL + "/matting2?mattingType=3";
         //是否裁剪至最小非透明区域 （非必填）
-        Boolean crop = null;
+        //Boolean crop = null;
         try {
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(images.get(0));
             File file = new File(this.getClass().getClassLoader().getResource(images.get(0)).getPath());
@@ -374,7 +374,7 @@ public class ApiMattingRequestExample {
         //抠图类型 1-人像抠图
         Integer mattingType = 3;
         //是否裁剪 （非必填）
-        Boolean crop = null;
+        //Boolean crop = null;
         //图片网络地址 (必填)
         String imageUrl = IMAGE_URL;
         try {
